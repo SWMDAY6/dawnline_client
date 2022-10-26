@@ -115,7 +115,28 @@ class ViewPage extends GetView<ViewController> {
                 ],
               ),
             ),
-          )
+          ),
+          Positioned(
+            // top button
+            top: 60,
+            child: SizedBox(
+              width: Get.width,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    icon: const Icon(
+                      Icons.my_library_books,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      Get.toNamed(Routes.MYPAGE);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

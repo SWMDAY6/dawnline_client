@@ -2,6 +2,7 @@ import 'package:dawnline/app/data/model/post_model.dart';
 import 'package:dawnline/app/data/provider/post_api.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PostPage extends StatelessWidget {
   // const PostPage({super.key});
@@ -12,25 +13,41 @@ class PostPage extends StatelessWidget {
   ];
 
   Widget _buildTextField() {
-    final maxLines = 20;
+    const maxLines = 20;
 
     return Container(
-      margin: EdgeInsets.all(12),
+      margin: const EdgeInsets.all(12),
       height: maxLines * 24.0,
       child: TextField(
         maxLines: maxLines,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           hintText: "여기에 내용을\n입력해주세요",
           fillColor: Colors.transparent,
           filled: true,
         ),
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 40,
         ),
         controller: postInputController,
         maxLength: 100,
       ),
     );
+  }
+
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  late Future<List<String>> PostList;
+
+  Future<void> _addPostList(String key) async {
+    final SharedPreferences prefs = await _prefs;
+    final List<String> list = prefs.getStringList('PostList') ?? [];
+    list.add(key);
+    prefs.setStringList('PostList', list);
+    print("shared_preferences {$list}");
+    //(prefs.getInt('counter') ?? 0) + 1;
+
+    // _counter = prefs.setInt('counter', counter).then((bool success) {
+    //   return counter;
+    // });
   }
 
   postRequests() async {
@@ -43,6 +60,7 @@ class PostPage extends StatelessWidget {
       ),
     );
     print(response);
+    _addPostList(response.toString());
     if (response != -1) {
       return response;
     }
@@ -51,6 +69,7 @@ class PostPage extends StatelessWidget {
 
   final postInputController = TextEditingController();
   final passwordInputController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,17 +127,9 @@ class PostPage extends StatelessWidget {
                     ),
                     onPressed: () {
                       print("previous");
-                      // Navigator.pop(context);
                       Get.back();
                     },
                   ),
-                  // IconButton(
-                  //   icon: const Icon(
-                  //     Icons.arrow_left,
-                  //     color: Colors.black,
-                  //   ),
-                  //   onPressed: () {},
-                  // ),
                 ],
               ),
             ),
