@@ -1,6 +1,6 @@
-// ignore_for_file: constant_identifier_names
 import 'package:dawnline/app/binding/mypage_binding.dart';
 import 'package:dawnline/app/binding/view_binding.dart';
+import 'package:dawnline/app/ui/detail_page.dart';
 import 'package:dawnline/app/ui/my_page.dart';
 import 'package:dawnline/app/ui/post_page.dart';
 import 'package:dawnline/app/ui/view_page.dart';
@@ -10,6 +10,7 @@ abstract class Routes {
   static const INITIAL = '/';
   static const POST = '/post';
   static const MYPAGE = '/mypage';
+  static const DETAIL = '/detail';
 }
 
 class AppPages {
@@ -27,6 +28,10 @@ class AppPages {
       name: Routes.MYPAGE,
       page: () => MyPage(),
       binding: MyPageBinding(),
+    ),
+    GetPage(
+      name: Routes.DETAIL,
+      page: () => DetailPage(),
     ),
   ];
 }

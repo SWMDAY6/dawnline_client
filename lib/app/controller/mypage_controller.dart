@@ -14,9 +14,7 @@ class MyPageController extends GetxController {
   getAll() {
     repository.getAll().then(
       (data) {
-        print("asdf");
         postList = data;
-        print(data);
       },
     );
   }
