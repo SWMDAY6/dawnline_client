@@ -15,7 +15,7 @@ class PostPage extends StatelessWidget {
   final passwordInputController = TextEditingController();
   static FocusNode _focus = FocusNode();
   int? response;
-  bool? _keyboar  dVisible = true;
+  bool? _keyboardVisible = true;
 
   Future<void> getPosition() async {
     LocationPermission permission = await Geolocator.requestPermission();
