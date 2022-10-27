@@ -1,19 +1,17 @@
 import 'package:dawnline/app/data/model/comment_model.dart';
 
-class ViewModel {
+class MyPageModel {
   int postId;
   String content;
-  String? password;
   double latitude;
   double longitude;
   String createdAt;
   String modifiedAt;
   List<CommentModel>? comments;
 
-  ViewModel({
+  MyPageModel({
     required this.postId,
     required this.content,
-    this.password,
     required this.latitude,
     required this.longitude,
     required this.createdAt,
@@ -25,7 +23,7 @@ class ViewModel {
     return json.map((comment) => CommentModel.fromJson(comment)).toList();
   }
 
-  ViewModel.fromJson(Map<String, Object?> json)
+  MyPageModel.fromJson(Map<String, Object?> json)
       : this(
           postId: json['postId'] == null ? 0 : json['postId'] as int,
           content: json['content'] == null ? '' : json['content'] as String,
@@ -36,7 +34,6 @@ class ViewModel {
               json['longitude'] == null ? 0.0 : json['longitude'] as double,
           modifiedAt:
               json['modifiedAt'] == null ? '' : json['modifiedAt'] as String,
-          password: json['password'] == null ? '' : json['password'] as String,
           comments:
               json['comment'] == null ? [] : makeCommentList(json['comments']),
         );
@@ -45,7 +42,6 @@ class ViewModel {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['postId'] = postId;
     data['content'] = content;
-    data['password'] = password;
     data['latitude'] = latitude;
     data['longitude'] = longitude;
     data['createdAt'] = createdAt;
@@ -54,11 +50,10 @@ class ViewModel {
     return data;
   }
 
-  static ViewModel getInitialViewModel() {
-    return ViewModel(
+  static MyPageModel getInitialViewModel() {
+    return MyPageModel(
       postId: 0,
       content: '',
-      password: '',
       latitude: 0.0,
       longitude: 0.0,
       createdAt: '',

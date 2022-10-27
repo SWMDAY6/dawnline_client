@@ -21,14 +21,22 @@ class ViewController extends GetxController {
   getAll() {
     repository.getAll().then((data) {
       postList = data;
-      post = postList[0];
+      post = postList[postList.length - 1];
     });
   }
 
-  void next() {
+  void previous() {
     cnt++;
-    if (cnt > postList.length) {
+    if (cnt >= postList.length) {
       cnt = 0;
+    }
+    post = postList[cnt];
+  }
+
+  void next() {
+    cnt--;
+    if (cnt < 0) {
+      cnt = postList.length - 1;
     }
     post = postList[cnt];
   }

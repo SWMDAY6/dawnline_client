@@ -13,6 +13,7 @@ class ViewApi {
         Iterable jsonResponse = json.decode(utf8.decode(response.bodyBytes));
         List<ViewModel> listViewModel =
             jsonResponse.map((model) => ViewModel.fromJson(model)).toList();
+        print("viewapi ${jsonResponse}");
         return listViewModel;
       } else {
         print("error");
