@@ -14,7 +14,7 @@ class MyPageApi {
     try {
       final SharedPreferences prefs = await _prefs;
       final List<String> list = prefs.getStringList('PostList') ?? [];
-      print("apiList ${list}");
+
       if (list == []) {
         return;
       }
@@ -26,16 +26,18 @@ class MyPageApi {
           },
         ),
       );
-      print("myPageApi ${response.statusCode}");
-      if (response.statusCode == 200) {
-        Iterable jsonResponse = json.decode(utf8.decode(response.bodyBytes));
-        print(jsonResponse);
-        List<MyPageModel> listMyPageModel =
-            jsonResponse.map((model) => MyPageModel.fromJson(model)).toList();
-        return listMyPageModel;
-      } else {
+
+      if (response.statusCode != 200) {
         print("error");
+        return;
       }
+
+      Iterable jsonResponse = json.decode(utf8.decode(response.bodyBytes));
+      print(jsonResponse);
+      List<MyPageModel> listMyPageModel =
+          jsonResponse.map((model) => MyPageModel.fromJson(model)).toList();
+
+      return listMyPageModel;
     } catch (_) {
       print("error");
     }

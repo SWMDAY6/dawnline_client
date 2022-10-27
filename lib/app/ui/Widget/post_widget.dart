@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 typedef PostClickFunction = void Function();
@@ -15,32 +16,30 @@ class PostWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: callBack,
-      child: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Image.asset(thumbnail),
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: 10, bottom: 20, left: 10, right: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Text(
-                  //   title,
-                  //   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                  // ),
-                  Text(
-                    content,
-                    style: TextStyle(
-                      fontSize: 12,
-                    ),
-                  )
-                ],
-              ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 10,
+              bottom: 20,
+              left: 10,
+              right: 10,
             ),
-          ],
-        ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  content,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
