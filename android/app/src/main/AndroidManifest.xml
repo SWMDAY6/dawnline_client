@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.day6.dawnline">
    <application
-        android:label="dawnline"
+        android:label="새벽 한 줄"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
