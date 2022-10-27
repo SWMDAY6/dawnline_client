@@ -1,6 +1,5 @@
 import 'package:dawnline/app/data/model/post_model.dart';
 import 'package:dawnline/app/data/provider/post_api.dart';
-import 'package:dawnline/app/routes/route.dart';
 import 'package:dawnline/app/ui/Widget/background_widget.dart';
 import 'package:dawnline/app/ui/Widget/topbar_widget.dart';
 import 'package:dawnline/app/ui/view_page.dart';
@@ -16,7 +15,7 @@ class PostPage extends StatelessWidget {
   final passwordInputController = TextEditingController();
   static FocusNode _focus = FocusNode();
   int? response;
-  bool? _keyboardVisible = true;
+  bool? _keyboar  dVisible = true;
 
   Future<void> getPosition() async {
     LocationPermission permission = await Geolocator.requestPermission();

@@ -6,7 +6,6 @@ class MyPageRepository {
   MyPageRepository({required this.apiClient});
 
   getAll() {
-    print("repository");
     return apiClient.getAll();
   }
 }

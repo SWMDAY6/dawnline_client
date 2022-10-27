@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MyPage extends GetView<MyPageController> {
-  const MyPage({super.key});
-
   @override
   Widget build(BuildContext context) {
     controller.getAll();
@@ -29,11 +27,13 @@ class MyPage extends GetView<MyPageController> {
                     children: List.generate(
                       controller.postList.length,
                       (index) {
-                        print("index${controller.postList[index].content}");
                         return PostWidget(
                           content: controller.postList[index].content,
                           callBack: () {
-                            Get.toNamed(Routes.INITIAL);
+                            Get.toNamed(
+                              Routes.DETAIL,
+                              arguments: controller.postList[index],
+                            );
                           },
                         );
                       },

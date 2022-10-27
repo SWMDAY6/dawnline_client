@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:dawnline/app/data/model/mypage_model.dart';
-import 'package:dawnline/app/data/model/post_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,10 +14,12 @@ class MyPageApi {
       final SharedPreferences prefs = await _prefs;
       final List<String> list = prefs.getStringList('PostList') ?? [];
 
-      if (list == []) {
-        return;
+      print("mypageListEmpty${list.isEmpty}");
+      if (list.isEmpty) {
+        List<MyPageModel> listMyPageModel = [MyPageModel.getInitialViewModel()];
+        return listMyPageModel;
       }
-
+      print("mypageList$list");
       var response = await http.get(
         Uri.parse(baseUrl).replace(
           queryParameters: {
