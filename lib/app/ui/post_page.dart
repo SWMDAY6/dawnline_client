@@ -6,6 +6,7 @@ import 'package:dawnline/app/ui/view_page.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PostPage extends StatelessWidget {
@@ -13,28 +14,21 @@ class PostPage extends StatelessWidget {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   final postInputController = TextEditingController();
   final passwordInputController = TextEditingController();
-  static FocusNode _focus = FocusNode();
   int? response;
-  bool? _keyboardVisible = true;
 
   Future<void> getPosition() async {
-    LocationPermission permission = await Geolocator.requestPermission();
+    if (await Permission.location.request().isGranted == false) {
+      await Geolocator.requestPermission();
+    }
     currentPosition = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
     print(currentPosition);
   }
 
-  void _onFocusChange() {
-    // print("Focus: ${_focus.hasFocus}");
-    // _keyboardVisible = _focus.hasFocus;
-    // Get.reload();
-  }
-
   Widget _buildTextField() {
     const maxLines = 20;
 
-    _focus.addListener(_onFocusChange);
     return Container(
       margin: const EdgeInsets.all(12),
       height: maxLines * 24.0,
@@ -88,9 +82,6 @@ class PostPage extends StatelessWidget {
 
   postRequests(context) async {
     await getPosition();
-    print(currentPosition);
-    print("postInput ${postInputController.text}");
-    print("passwordInput ${passwordInputController.text}");
     if (postInputController.text.isEmpty ||
         passwordInputController.text.isEmpty) {
       showDialog(
@@ -117,6 +108,7 @@ class PostPage extends StatelessWidget {
       );
       return -1;
     }
+    if (currentPosition == null) return;
     response = await PostApi.postRequest(
       PostModel(
         content: postInputController.text,
@@ -125,9 +117,7 @@ class PostPage extends StatelessWidget {
         longitude: currentPosition.longitude,
       ),
     );
-    print(response);
     _addPostList(response.toString());
-    // print("response ${response.runtimeType}");
     if (response == -1) {
       //error
       showDialog(

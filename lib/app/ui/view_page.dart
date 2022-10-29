@@ -30,7 +30,7 @@ class ViewPage extends GetView<ViewController> {
                           '${controller.post.content}',
                           style: const TextStyle(
                             color: Colors.white,
-                            fontSize: 30,
+                            fontSize: 25,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -79,7 +79,6 @@ class ViewPage extends GetView<ViewController> {
               ),
             ),
             Positioned(
-              // top button
               top: 60,
               child: SizedBox(
                 width: Get.width,
