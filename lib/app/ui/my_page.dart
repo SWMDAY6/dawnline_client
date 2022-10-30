@@ -15,8 +15,8 @@ class MyPage extends GetView<MyPageController> {
       extendBodyBehindAppBar: true, // 앱 바 위에까지 침범 허용
       body: Stack(
         children: [
-          TopBarWidget.getTopBarWidget(),
           BackGroundWidget.getRandomBackgroundImage(),
+          TopBarWidget.getTopBarWidget(),
           Center(
             child: SizedBox(
               width: 360,
@@ -32,7 +32,9 @@ class MyPage extends GetView<MyPageController> {
                           callBack: () {
                             Get.toNamed(
                               Routes.DETAIL,
-                              arguments: controller.postList[index],
+                              arguments: controller.postList[index] == 0
+                                  ? -1
+                                  : controller.postList[index],
                             );
                           },
                         );
