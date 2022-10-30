@@ -11,13 +11,17 @@ class ViewApi {
       var response = await http.get(Uri.parse(baseUrl));
       if (response.statusCode == 200) {
         Iterable jsonResponse = json.decode(utf8.decode(response.bodyBytes));
+        // print(jsonResponse);
+        // print(ViewModel.fromJson(jsonResponse[1]));
         List<ViewModel> listViewModel =
             jsonResponse.map((model) => ViewModel.fromJson(model)).toList();
+        // print("123$listViewModel");
         return listViewModel;
       } else {
         print("error");
       }
     } catch (_) {
+      // print(_.toString());
       print("error");
     }
   }
