@@ -16,7 +16,6 @@ class MyPage extends GetView<MyPageController> {
       body: Stack(
         children: [
           BackGroundWidget.getRandomBackgroundImage(),
-          TopBarWidget.getTopBarWidget(),
           Center(
             child: SizedBox(
               width: 360,
@@ -45,6 +44,7 @@ class MyPage extends GetView<MyPageController> {
               ),
             ),
           ),
+          TopBarWidget.getTopBarWidget(),
         ],
       ),
     );

@@ -6,11 +6,12 @@ import 'package:dawnline/app/controller/view_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ViewPage extends GetView<ViewController> {
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   addreports(String postId) async {
-    SharedPreferences prefs = await _prefs;
+    // SharedPreferences prefs = await _prefs;
+    final prefs = await SharedPreferences.getInstance();
     List<String> list = prefs.getStringList('reports') ?? [];
     list.add(postId);
+    print("addreports in $list");
     prefs.setStringList('reports', list);
   }
 
@@ -122,7 +123,8 @@ class ViewPage extends GetView<ViewController> {
                                 TextButton(
                                   child: const Text("확인"),
                                   onPressed: () {
-                                    addreports(controller.post.postId.toString());
+                                    addreports(
+                                        controller.post.postId.toString());
                                     controller.next();
                                     Get.back();
                                   },

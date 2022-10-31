@@ -4,8 +4,6 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ViewController extends GetxController {
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
   final ViewRepository repository;
   ViewController({required this.repository});
   final _postsList = <ViewModel>[].obs;
@@ -22,7 +20,8 @@ class ViewController extends GetxController {
   int cnt = 0;
 
   getAll() async {
-    SharedPreferences prefs = await _prefs;
+    // SharedPreferences prefs = await _prefs;
+    final prefs = await SharedPreferences.getInstance();
     List<String> list = prefs.getStringList('reports') ?? [];
     repository.getAll().then(
       (data) {
@@ -43,9 +42,10 @@ class ViewController extends GetxController {
   }
 
   void previous() async {
-    SharedPreferences prefs = await _prefs;
+    // SharedPreferences prefs = await _prefs;
+    final prefs = await SharedPreferences.getInstance();
     List<String> list = prefs.getStringList('reports') ?? [];
-
+    print(list);
     while (true) {
       cnt++;
       if (cnt >= postList.length) {
@@ -57,7 +57,8 @@ class ViewController extends GetxController {
   }
 
   void next() async {
-    SharedPreferences prefs = await _prefs;
+    // SharedPreferences prefs = await _prefs;
+    final prefs = await SharedPreferences.getInstance();
     List<String> list = prefs.getStringList('reports') ?? [];
     print(list);
     print(postList[cnt].postId);
