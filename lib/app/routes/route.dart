@@ -3,6 +3,7 @@ import 'package:dawnline/app/binding/view_binding.dart';
 import 'package:dawnline/app/ui/detail_page.dart';
 import 'package:dawnline/app/ui/my_page.dart';
 import 'package:dawnline/app/ui/post_page.dart';
+import 'package:dawnline/app/ui/serviceagreement_page.dart';
 import 'package:dawnline/app/ui/view_page.dart';
 import 'package:get/route_manager.dart';
 
@@ -11,6 +12,7 @@ abstract class Routes {
   static const POST = '/post';
   static const MYPAGE = '/mypage';
   static const DETAIL = '/detail';
+  static const AGREEMENT = '/agreement';
 }
 
 class AppPages {
@@ -33,5 +35,9 @@ class AppPages {
       name: Routes.DETAIL,
       page: () => DetailPage(),
     ),
+    GetPage(
+      name: Routes.AGREEMENT,
+      page: () => ServiceAgreementPage(),
+    )
   ];
 }

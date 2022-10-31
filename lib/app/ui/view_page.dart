@@ -1,6 +1,7 @@
 import 'package:dawnline/app/routes/route.dart';
 import 'package:dawnline/app/ui/Widget/background_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:dawnline/app/controller/view_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,6 +14,40 @@ class ViewPage extends GetView<ViewController> {
     list.add(postId);
     print("addreports in $list");
     prefs.setStringList('reports', list);
+  }
+
+  showAgreementDialog(context) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('해당 서비스는 익명을 기반으로 의견을 나누는 페이지입니다.\n' +
+                    '약관에 동의하시면 확인 버튼을 눌러주세요.\n' +
+                    '동의하지 않으시면 앱의 사용이 어렵습니다.'),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: const Text("확인"),
+              onPressed: () {
+                Get.toNamed(Routes.INITIAL);
+              },
+            ),
+            TextButton(
+              child: const Text("취소"),
+              onPressed: () {
+                SystemNavigator.pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
