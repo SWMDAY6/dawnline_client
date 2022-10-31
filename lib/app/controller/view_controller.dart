@@ -8,6 +8,7 @@ class ViewController extends GetxController {
   ViewController({required this.repository});
   final _postsList = <ViewModel>[].obs;
   final _post = ViewModel.getInitialViewModel().obs;
+  final _agreement = false.obs;
 
   get postList => _postsList.value;
 
@@ -16,6 +17,23 @@ class ViewController extends GetxController {
   get post => _post.value;
 
   set post(value) => _post.value = value;
+
+  get agreement => _agreement.value;
+
+  set agreement(value) => _agreement.value = value;
+
+  @override
+  void onInit() async {
+    // TODO: implement onInit
+    super.onInit();
+    final prefs = await SharedPreferences.getInstance();
+    agreement = prefs.getBool('agreement') ?? false;
+  }
+
+  setAgreement() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool('agreement', true);
+  }
 
   int cnt = 0;
 
