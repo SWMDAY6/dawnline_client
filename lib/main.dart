@@ -1,6 +1,5 @@
 import 'package:dawnline/app/binding/view_binding.dart';
 import 'package:dawnline/app/routes/route.dart';
-import 'package:dawnline/app/ui/serviceagreement_page.dart';
 import 'package:dawnline/app/ui/view_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const ServiceAgreementPage(),
+      home: ViewPage(),
       initialBinding: ViewBinding(),
       debugShowCheckedModeBanner: false, // Hide the debug banner
       getPages: AppPages.routes,

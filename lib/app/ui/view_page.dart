@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dawnline/app/routes/route.dart';
 import 'package:dawnline/app/ui/Widget/background_widget.dart';
 import 'package:flutter/material.dart';
@@ -35,13 +37,18 @@ class ViewPage extends GetView<ViewController> {
             TextButton(
               child: const Text("확인"),
               onPressed: () {
-                Get.toNamed(Routes.INITIAL);
+                controller.setAgreement();
+                Get.back();
               },
             ),
             TextButton(
               child: const Text("취소"),
               onPressed: () {
-                SystemNavigator.pop();
+                if (Platform.isIOS) {
+                  exit(0);
+                } else {
+                  SystemNavigator.pop();
+                }
               },
             ),
           ],
@@ -52,6 +59,15 @@ class ViewPage extends GetView<ViewController> {
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(
+      Duration.zero,
+      () {
+        if (controller.agreement == false) {
+          showAgreementDialog(context);
+        }
+      },
+    );
+
     controller.getAll();
     return Scaffold(
       resizeToAvoidBottomInset: false,
