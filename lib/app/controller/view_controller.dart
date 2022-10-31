@@ -26,8 +26,8 @@ class ViewController extends GetxController {
     repository.getAll().then(
       (data) {
         postList = data;
-        print(list);
-        print(postList[cnt].postId);
+        // print(list);
+        // print(postList[cnt].postId);
         cnt = postList.length;
         while (true) {
           cnt--;
@@ -60,8 +60,8 @@ class ViewController extends GetxController {
     // SharedPreferences prefs = await _prefs;
     final prefs = await SharedPreferences.getInstance();
     List<String> list = prefs.getStringList('reports') ?? [];
-    print(list);
-    print(postList[cnt].postId);
+    // print(list);
+    // print(postList[cnt].postId);
     while (true) {
       cnt--;
       if (cnt < 0) {
