@@ -25,6 +25,12 @@ class ViewController extends GetxController {
     });
   }
 
+  getAllwithoutCnt() {
+    repository.getAll().then((data) {
+      postList = data;
+    });
+  }
+
   void previous() {
     cnt++;
     if (cnt >= postList.length) {

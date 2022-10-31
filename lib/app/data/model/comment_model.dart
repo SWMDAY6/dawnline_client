@@ -24,12 +24,4 @@ class CommentModel {
     data['modifiedAt'] = modifiedAt;
     return data;
   }
-
-  @override
-  String toString() {
-    // TODO: implement toString
-    return """
-  content :: $content
-""";
-  }
 }

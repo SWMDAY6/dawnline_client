@@ -1,11 +1,12 @@
+import 'package:dawnline/app/data/provider/addcomment_api.dart';
 import 'package:dawnline/app/routes/route.dart';
 import 'package:dawnline/app/ui/Widget/background_widget.dart';
-import 'package:dawnline/app/ui/Widget/comment_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dawnline/app/controller/view_controller.dart';
 
 class ViewPage extends GetView<ViewController> {
+  final commentInputController = TextEditingController();
   getCommentCount() {
     if (controller.post.comments == null) return 0;
     return controller.post.comments.length;
@@ -15,20 +16,39 @@ class ViewPage extends GetView<ViewController> {
     if (controller.post.comments == null) {
       return Container();
     }
-    return ListView.separated(
-      padding: EdgeInsets.all(8.0),
-      itemCount: controller.post.comments.length,
-      itemBuilder: (BuildContext context, int index) {
-        return Container(
-          height: 50,
+    return Expanded(
+      child: ListView.separated(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        padding: const EdgeInsets.all(8.0),
+        itemCount: controller.post.comments.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            height: 50,
+            color: Colors.white,
+            child: Text(controller.post.comments[index].content),
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) => const Divider(
+          height: 10,
           color: Colors.black,
-          child: Text(controller.post.comments[index]),
-        );
-      },
-      separatorBuilder: (BuildContext context, int index) => const Divider(
-        height: 10,
+        ),
+      ),
+    );
+  }
+
+  Widget addCommentView() {
+    return TextField(
+      decoration: const InputDecoration(
+        filled: true,
+        fillColor: Colors.transparent,
+        hintText: '댓글을 입력해주세요',
+        hintStyle: TextStyle(color: Colors.black),
+      ),
+      style: const TextStyle(
         color: Colors.black,
       ),
+      controller: commentInputController,
     );
   }
 
@@ -133,24 +153,57 @@ class ViewPage extends GetView<ViewController> {
                   IconButton(
                     onPressed: () {
                       Get.bottomSheet(
-                        Column(
-                          children: [
-                            // const SizedBox(height: 20),
-                            ListView(
-                              padding: EdgeInsets.all(8.0),
-                              children: [
-                                Expanded(
-                                  child: listview_builder(),
-                                )
-                              ],
-                            ),
-                            OutlinedButton(
-                              onPressed: () {
-                                Get.back();
-                              },
-                              child: const Text('Close'),
-                            ),
-                          ],
+                        Expanded(
+                          child: Column(
+                            children: [
+                              listview_builder(),
+                              Row(
+                                children: [
+                                  Flexible(
+                                    child: addCommentView(),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      addCommentApi.postRequest(
+                                        commentInputController.text,
+                                        controller.post.postId,
+                                      );
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            content: SingleChildScrollView(
+                                              child: ListBody(
+                                                children: const <Widget>[
+                                                  Text('댓글 작성이 완료되었습니다.'),
+                                                ],
+                                              ),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                child: const Text("확인"),
+                                                onPressed: () {
+                                                  Get.back();
+                                                  Get.back();
+                                                  commentInputController.text =
+                                                      "";
+                                                  controller.getAllwithoutCnt();
+                                                },
+                                              )
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: const Text('등록하기'),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                            ],
+                          ),
                         ),
                         backgroundColor: Colors.white,
                         elevation: 0,
@@ -158,34 +211,6 @@ class ViewPage extends GetView<ViewController> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       );
-                      // showModalBottomSheet<void>(
-                      //   context: context,
-                      //   builder: (BuildContext context) {
-                      //     return Container(
-                      //       height: 500,
-                      //       color: Colors.white,
-                      //       child: Center(
-                      //         child: Column(
-                      //           mainAxisAlignment: MainAxisAlignment.center,
-                      //           mainAxisSize: MainAxisSize.min,
-                      //           children: <Widget>[
-                      //             SingleChildScrollView(
-                      //               child: ListView(
-                      //                 children: List.generate(
-                      //                   controller.post.comments.length,
-                      //                   (index) => CommentWidget(
-                      //                     content: controller
-                      //                         .post.comments[index].content,
-                      //                   ),
-                      //                 ),
-                      //               ),
-                      //             ),
-                      //           ],
-                      //         ),
-                      //       ),
-                      //     );
-                      //   },
-                      // );
                     },
                     icon: const Icon(
                       Icons.comment,
