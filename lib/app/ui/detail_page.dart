@@ -87,7 +87,6 @@ class DetailPage extends StatelessWidget {
       body: Stack(
         children: [
           BackGroundWidget.getRandomBackgroundImage(),
-          TopBarWidget.getTopBarWidget(),
           Center(
             child: Opacity(
               opacity: 0.70,
@@ -133,7 +132,8 @@ class DetailPage extends StatelessWidget {
                         fontSize: 15,
                       ),
                     ),
-                  )
+                  ),
+                  TopBarWidget.getTopBarWidget(),
                 ],
               ),
             ),

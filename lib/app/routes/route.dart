@@ -11,6 +11,7 @@ abstract class Routes {
   static const POST = '/post';
   static const MYPAGE = '/mypage';
   static const DETAIL = '/detail';
+  static const AGREEMENT = '/agreement';
 }
 
 class AppPages {
@@ -32,6 +33,6 @@ class AppPages {
     GetPage(
       name: Routes.DETAIL,
       page: () => DetailPage(),
-    ),
+    )
   ];
 }

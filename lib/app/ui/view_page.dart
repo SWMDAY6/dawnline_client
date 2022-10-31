@@ -1,9 +1,12 @@
 import 'package:dawnline/app/data/provider/addcomment_api.dart';
+import 'dart:io';
 import 'package:dawnline/app/routes/route.dart';
 import 'package:dawnline/app/ui/Widget/background_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:dawnline/app/controller/view_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ViewPage extends GetView<ViewController> {
   final commentInputController = TextEditingController();
@@ -36,7 +39,15 @@ class ViewPage extends GetView<ViewController> {
       ),
     );
   }
-
+  addreports(String postId) async {
+    // SharedPreferences prefs = await _prefs;
+    final prefs = await SharedPreferences.getInstance();
+    List<String> list = prefs.getStringList('reports') ?? [];
+    list.add(postId);
+    print("addreports in $list");
+    prefs.setStringList('reports', list);
+  }
+  
   Widget addCommentView() {
     return TextField(
       decoration: const InputDecoration(
@@ -52,8 +63,57 @@ class ViewPage extends GetView<ViewController> {
     );
   }
 
+
+  showAgreementDialog(context) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('해당 서비스는 익명을 기반으로 의견을 나누는 페이지입니다.\n' +
+                    '약관에 동의하시면 확인 버튼을 눌러주세요.\n' +
+                    '동의하지 않으시면 앱의 사용이 어렵습니다.'),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: const Text("확인"),
+              onPressed: () {
+                controller.setAgreement();
+                Get.back();
+              },
+            ),
+            TextButton(
+              child: const Text("취소"),
+              onPressed: () {
+                if (Platform.isIOS) {
+                  exit(0);
+                } else {
+                  SystemNavigator.pop();
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    Future.delayed(
+      Duration.zero,
+      () {
+        if (controller.agreement == false) {
+          showAgreementDialog(context);
+        }
+      },
+    );
+
     controller.getAll();
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -134,12 +194,53 @@ class ViewPage extends GetView<ViewController> {
                   children: [
                     IconButton(
                       icon: const Icon(
-                        Icons.my_library_books,
+                        Icons.list,
                         color: Colors.white,
                       ),
                       onPressed: () {
                         Get.toNamed(Routes.MYPAGE);
                       },
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              content: SingleChildScrollView(
+                                child: ListBody(
+                                  children: const <Widget>[
+                                    Text(
+                                      '신고하시겠습니까?\n신고하시면 해당 글은 차단되며 서버로 데이터가 전송됩니다.\n글은 관리자의 검토를 거쳐 삭제될 수 있습니다.',
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  child: const Text("확인"),
+                                  onPressed: () {
+                                    addreports(
+                                        controller.post.postId.toString());
+                                    controller.next();
+                                    Get.back();
+                                  },
+                                ),
+                                TextButton(
+                                  child: const Text("취소"),
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.report,
+                        color: Colors.white,
+                      ),
                     ),
                   ],
                 ),

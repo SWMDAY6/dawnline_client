@@ -14,7 +14,21 @@ class MyPageController extends GetxController {
   getAll() {
     repository.getAll().then(
       (data) {
-        postList = data;
+        if (data[0].content == "") {
+          print("data is null");
+          postList = [
+            MyPageModel(
+              postId: 0,
+              content: "작성하신 글이 없습니다",
+              latitude: 38.0,
+              longitude: 122.0,
+              createdAt: "2022-10-30T07:43:52.705478",
+              modifiedAt: "2022-10-30T07:43:52.705478",
+            )
+          ];
+        } else {
+          postList = data;
+        }
       },
     );
   }
