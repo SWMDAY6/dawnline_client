@@ -59,6 +59,11 @@ class ViewController extends GetxController {
     );
   }
 
+  getAllwithoutCnt() {
+    repository.getAll().then((data) {
+      postList = data;
+    });
+  }
   void previous() async {
     // SharedPreferences prefs = await _prefs;
     final prefs = await SharedPreferences.getInstance();

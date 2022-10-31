@@ -1,5 +1,5 @@
+import 'package:dawnline/app/data/provider/addcomment_api.dart';
 import 'dart:io';
-
 import 'package:dawnline/app/routes/route.dart';
 import 'package:dawnline/app/ui/Widget/background_widget.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +9,36 @@ import 'package:dawnline/app/controller/view_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ViewPage extends GetView<ViewController> {
+  final commentInputController = TextEditingController();
+  getCommentCount() {
+    if (controller.post.comments == null) return 0;
+    return controller.post.comments.length;
+  }
+
+  Widget listview_builder() {
+    if (controller.post.comments == null) {
+      return Container();
+    }
+    return Expanded(
+      child: ListView.separated(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        padding: const EdgeInsets.all(8.0),
+        itemCount: controller.post.comments.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            height: 50,
+            color: Colors.white,
+            child: Text(controller.post.comments[index].content),
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) => const Divider(
+          height: 10,
+          color: Colors.black,
+        ),
+      ),
+    );
+  }
   addreports(String postId) async {
     // SharedPreferences prefs = await _prefs;
     final prefs = await SharedPreferences.getInstance();
@@ -17,6 +47,22 @@ class ViewPage extends GetView<ViewController> {
     print("addreports in $list");
     prefs.setStringList('reports', list);
   }
+  
+  Widget addCommentView() {
+    return TextField(
+      decoration: const InputDecoration(
+        filled: true,
+        fillColor: Colors.transparent,
+        hintText: '댓글을 입력해주세요',
+        hintStyle: TextStyle(color: Colors.black),
+      ),
+      style: const TextStyle(
+        color: Colors.black,
+      ),
+      controller: commentInputController,
+    );
+  }
+
 
   showAgreementDialog(context) {
     return showDialog(
@@ -198,6 +244,87 @@ class ViewPage extends GetView<ViewController> {
                     ),
                   ],
                 ),
+              ),
+            ),
+            Positioned(
+              bottom: kBottomNavigationBarHeight + 50,
+              right: 25,
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Get.bottomSheet(
+                        Expanded(
+                          child: Column(
+                            children: [
+                              listview_builder(),
+                              Row(
+                                children: [
+                                  Flexible(
+                                    child: addCommentView(),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      addCommentApi.postRequest(
+                                        commentInputController.text,
+                                        controller.post.postId,
+                                      );
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            content: SingleChildScrollView(
+                                              child: ListBody(
+                                                children: const <Widget>[
+                                                  Text('댓글 작성이 완료되었습니다.'),
+                                                ],
+                                              ),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                child: const Text("확인"),
+                                                onPressed: () {
+                                                  Get.back();
+                                                  Get.back();
+                                                  commentInputController.text =
+                                                      "";
+                                                  controller.getAllwithoutCnt();
+                                                },
+                                              )
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: const Text('등록하기'),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                            ],
+                          ),
+                        ),
+                        backgroundColor: Colors.white,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.comment,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    getCommentCount().toString(),
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

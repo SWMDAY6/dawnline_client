@@ -25,6 +25,14 @@ class ViewModel {
     return json.map((comment) => CommentModel.fromJson(comment)).toList();
   }
 
+  static List<CommentModel> getCommentList(json) {
+    Iterable data = json;
+    List<CommentModel> result =
+        data.map((comment) => CommentModel.fromJson(comment)).toList();
+    // print(result.runtimeType);
+    return result;
+  }
+
   ViewModel.fromJson(Map<String, Object?> json)
       : this(
           postId: json['postId'] == null ? 0 : json['postId'] as int,
@@ -38,7 +46,7 @@ class ViewModel {
               json['modifiedAt'] == null ? '' : json['modifiedAt'] as String,
           password: json['password'] == null ? '' : json['password'] as String,
           comments:
-              json['comment'] == null ? [] : makeCommentList(json['comments']),
+              json['comments'] == null ? [] : getCommentList(json['comments']),
         );
 
   Map<String, dynamic> toJson() {
@@ -63,6 +71,7 @@ class ViewModel {
       longitude: 0.0,
       createdAt: '',
       modifiedAt: '',
+      comments: null,
     );
   }
 }
